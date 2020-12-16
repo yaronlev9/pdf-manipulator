@@ -49,8 +49,18 @@ def create_pdf_from_images(images, output):
         ims.append(im)
     ims[0].save(output, "PDF", resolution=100.0, save_all=True, append_images=ims[1:])
 
+def rearange_pdf_order(pdf, new_order):
+    output = 'new_' + pdf
+    pdf_writer = PyPDF2.PdfFileWriter()
+    pdf_reader = PyPDF2.PdfFileReader(pdf)
+    for i in new_order:
+        pdf_writer.addPage(pdf_reader.getPage(i))
+    with open(output, 'wb') as out:
+        pdf_writer.write(out)
+
 if __name__ == '__main__':
     # extract_information("combinedfile.pdf")
     # remove_pages('merged_combinedfile.pdf', [4, 5, 6, 7], 'combinedfile.pdf')
     # merge_pdfs(['removed_combinedfile.pdf', '2020.pdf'], 'grades sheet.pdf')
     # create_pdf_from_images(['2020.png'], '2020.pdf')
+    # rearange_pdf_order("grades sheet.pdf", [4, 3, 2, 1, 0])
